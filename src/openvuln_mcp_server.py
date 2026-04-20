@@ -398,3 +398,6 @@ def get_cisco_advisories_by_product(product_name: str):
     except Exception as e:
         print(f"Error in get_cisco_advisories_by_product: {e}")
         return {"status": "error", "message": str(e)}
+
+if __name__ == "__main__":
+    mcp_server.run()
