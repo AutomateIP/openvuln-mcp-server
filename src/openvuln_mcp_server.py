@@ -236,17 +236,18 @@ class CiscoOpenVulnClient:
 
 # Retrieve API credentials from environment variables
 # IMPORTANT: Never hardcode these in your source code!
-CLIENT_ID = os.environ.get("CISCO_OPENVULN_CLIENT_ID")
-CLIENT_SECRET = os.environ.get("CISCO_OPENVULN_CLIENT_SECRET")
+CLIENT_ID = os.environ.get("CISCO_API_CLIENT_ID") or os.environ.get("CISCO_OPENVULN_CLIENT_ID")
+CLIENT_SECRET = os.environ.get("CISCO_API_CLIENT_SECRET") or os.environ.get("CISCO_OPENVULN_CLIENT_SECRET")
 
 if not CLIENT_ID or not CLIENT_SECRET:
-    print("ERROR: CISCO_OPENVULN_CLIENT_ID and CISCO_OPENVULN_CLIENT_SECRET environment variables are not set.")
+    print("ERROR: CISCO_API_CLIENT_ID and CISCO_API_CLIENT_SECRET environment variables are not set.")
     print("Please create a .env file in the project root with your Cisco API credentials, or set them in your environment.")
     print("Example .env file content:")
-    print("CISCO_OPENVULN_CLIENT_ID=\"YOUR_CLIENT_ID\"")
-    print("CISCO_OPENVULN_CLIENT_SECRET=\"YOUR_CLIENT_SECRET\"")
+    print("CISCO_API_CLIENT_ID=\"YOUR_CLIENT_ID\"")
+    print("CISCO_API_CLIENT_SECRET=\"YOUR_CLIENT_SECRET\"")
     print("Exiting. Please configure the credentials and restart the server.")
     sys.exit(1)
+
 
 try:
     cisco_client = CiscoOpenVulnClient(CLIENT_ID, CLIENT_SECRET)
@@ -290,7 +291,7 @@ def get_cisco_advisory_by_id(advisory_id: str):
         return {"status": "error", "message": str(e)}
 
 @mcp_server.tool()
-def get_cisco_cve_details(cve_id: str):
+def get_cve(cve_id: str):
     """Retrieves details for a specific Common Vulnerability and Exposure (CVE) identifier from Cisco.
 
     Args:
